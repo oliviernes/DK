@@ -76,24 +76,27 @@ while continuer:
             num_x = int(position_donkey[0] / 50)
             num_y = int(position_donkey[1] / 50)
             if event.key == K_ESCAPE or sig == 1:
-                    sigue = 1
-                    sig = 1
+                sigue = 1
+                sig = 1
             # Si "flèche bas"
-            elif event.key == K_DOWN and carteN[num_y + 1][num_x] != "m":
+            # num_y + 1 <= 14 condition in order to stay on the screen
+            elif num_y + 1 <= 14 and event.key == K_DOWN and carteN[num_y + 1][num_x] != "m":
                 # On descend le perso
                 position_donkey = position_donkey.move(0, 50)
                 donk = donkey.face
             # Si "flèche haut"
             elif event.key == K_UP and carteN[num_y - 1][num_x] != "m":
                 # On monte le perso
-                position_donkey = position_donkey.move(0, -50)
-                donk = donkey.back
+                if num_y - 1 >= 0:
+                    position_donkey = position_donkey.move(0, -50)
+                    donk = donkey.back
             # Si "flèche left"
             elif event.key == K_LEFT and carteN[num_y][num_x - 1] != "m":
-                position_donkey = position_donkey.move(-50, 0)
-                donk = donkey.left
+                if num_x - 1 >= 0:
+                    position_donkey = position_donkey.move(-50, 0)
+                    donk = donkey.left
             # Si "flèche bas"
-            elif event.key == K_RIGHT and carteN[num_y][num_x + 1] != "m":
+            elif num_x + 1 <= 14 and event.key == K_RIGHT and carteN[num_y][num_x + 1] != "m":
                 # On descend le perso
                 position_donkey = position_donkey.move(50, 0)
                 donk = donkey.right
@@ -105,7 +108,6 @@ while continuer:
             Carte(carteN, fond, mur, depart, banane).affiche()
             # fenetre.blit(fond, (0,0))
             fenetre.blit(donk, position_donkey)
-            
+
         # Rafraichissement
         pygame.display.flip()
-
